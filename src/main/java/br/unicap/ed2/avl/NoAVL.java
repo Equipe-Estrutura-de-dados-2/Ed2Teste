@@ -11,7 +11,7 @@ public class NoAVL extends No {
         fatorBalanceamento = 0;
     }
 
-    public int getFB() {
+    public int getBalanceamento() {
         return fatorBalanceamento;
     }
     
