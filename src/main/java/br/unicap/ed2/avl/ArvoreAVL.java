@@ -38,24 +38,40 @@ public class ArvoreAVL extends AbstractArvoreBinariaDePesquisa<NoAVL> {
 
 			// Desbalanceamento a Direita
 			if (noAtual.getBalanceamento() >= 2) {
-				NoAVL direita = noAtual.getDireita();
-				if (noAtual.getBalanceamento() * direita.getBalanceamento() > 0) {
-					System.out.println("Rotação simples a Direita!");
+				
+				if(noAtual.getNoDireita().getBalanceamento() >= noAtual.getBalanceamento()) {
+					noAtual.setNoDireita(verificaBalanceamento(noAtual.getNoDireita()));
+					// recalcula balanceamento
+					calcularBalanceamento(raiz);
+				}
+				
+				if (noAtual.getBalanceamento() * noAtual.getNoDireita().getBalanceamento() > 0 && !estaBalanceada(noAtual)) {
+					System.out.println("Rotação simples a Direita no Nó " + noAtual.getChave());
 					return rotacaoSimplesDireita(noAtual);
-				} else {
-					System.out.println("Rotação dupla a Direita!");
+				} else if (!estaBalanceada(noAtual)) {
+					System.out.println("Rotação dupla a Direita no Nó " + noAtual.getChave());
 					return rotacaoDuplaDireita(noAtual);
+				} else {
+					return noAtual;
 				}
 			}
 			// Desbalanceamento a Esquerda
 			else {
-				NoAVL esquerda = noAtual.getEsquerda();
-				if (noAtual.getBalanceamento() * esquerda.getBalanceamento() > 0) {
-					System.out.println("Rotação simples a Esquerda!");
+				
+				if(noAtual.getNoEsquerda().getBalanceamento() <= noAtual.getBalanceamento()) {
+					noAtual.setNoEsquerda(verificaBalanceamento(noAtual.getNoEsquerda()));
+					// recalcula balanceamento
+					calcularBalanceamento(raiz);
+				}
+				
+				if (noAtual.getBalanceamento() * noAtual.getNoEsquerda().getBalanceamento() > 0 && !estaBalanceada(noAtual)) {
+					System.out.println("Rotação simples a Esquerda no Nó " + noAtual.getChave());
 					return rotacaoSimplesEsquerda(noAtual);
-				} else {
-					System.out.println("Rotação dupla a Esquerda!");
+				} else if (!estaBalanceada(noAtual)) {
+					System.out.println("Rotação dupla a Esquerda no Nó " + noAtual.getChave());
 					return rotacaoDuplaEsquerda(noAtual);
+				} else {
+					return noAtual;
 				}
 			}
 		}
@@ -94,13 +110,13 @@ public class ArvoreAVL extends AbstractArvoreBinariaDePesquisa<NoAVL> {
 
 		filhoDireita = noAtual.getDireita();
 		if (noAtual.getDireita() != null) {
-			NoAVL direita = noAtual.getDireita();
-			if (direita.getEsquerda() != null) {
+			
+			if (noAtual.getNoDireita().getEsquerda() != null) {
 				filhoDoFilho = filhoDireita.getEsquerda();
 			}
 		}
-		filhoDireita.setEsquerda(noAtual);
-		noAtual.setDireita(filhoDoFilho);
+		filhoDireita.setNoEsquerda(noAtual);
+		noAtual.setNoDireita(filhoDoFilho);
 
 		return filhoDireita;
 	}
@@ -137,7 +153,7 @@ public class ArvoreAVL extends AbstractArvoreBinariaDePesquisa<NoAVL> {
 		return novoFilhoDireita;
 	}
 
-	// ============ Metodos para calculo de balanceamento ===========//
+	// ============ Metodos para calculo de balanceamento =========== //
 
 	public int calcularAltura(NoAVL noAtual) {
 		NoAVL esquerda = noAtual.getEsquerda();
@@ -186,13 +202,28 @@ public class ArvoreAVL extends AbstractArvoreBinariaDePesquisa<NoAVL> {
 		}
 
 	}
+	
+	
+	public boolean estaBalanceada(NoAVL no) {
+		return !(no.getBalanceamento() >= 2 || no.getBalanceamento() <= -2);
+	}
+	
+	
 
 	// ======================= Main para testes ============================== //
 
 	public static void main(String[] args) {
 		ArvoreAVL a = new ArvoreAVL();
 		BinaryTreePrinter<NoAVL> p = new BinaryTreePrinter<NoAVL>(a);
+		a.inserir(50);
+		p = new BinaryTreePrinter<NoAVL>(a);
+		p.imprimir(System.out);
+		System.out.println();
 		a.inserir(10);
+		p = new BinaryTreePrinter<NoAVL>(a);
+		p.imprimir(System.out);
+		System.out.println();
+		a.inserir(60);
 		p = new BinaryTreePrinter<NoAVL>(a);
 		p.imprimir(System.out);
 		System.out.println();
@@ -204,27 +235,19 @@ public class ArvoreAVL extends AbstractArvoreBinariaDePesquisa<NoAVL> {
 		p = new BinaryTreePrinter<NoAVL>(a);
 		p.imprimir(System.out);
 		System.out.println();
-		a.inserir(4);
+		a.inserir(70);
 		p = new BinaryTreePrinter<NoAVL>(a);
 		p.imprimir(System.out);
 		System.out.println();
-		a.inserir(7);
+		a.inserir(40);
 		p = new BinaryTreePrinter<NoAVL>(a);
 		p.imprimir(System.out);
 		System.out.println();
-		a.inserir(30);
+		a.inserir(80);
 		p = new BinaryTreePrinter<NoAVL>(a);
 		p.imprimir(System.out);
 		System.out.println();
-		a.inserir(15);
-		p = new BinaryTreePrinter<NoAVL>(a);
-		p.imprimir(System.out);
-		System.out.println();
-		a.inserir(2);
-		p = new BinaryTreePrinter<NoAVL>(a);
-		p.imprimir(System.out);
-		System.out.println();
-		a.inserir(1);
+		a.inserir(90);
 		p = new BinaryTreePrinter<NoAVL>(a);
 		p.imprimir(System.out);
 		System.out.println();
