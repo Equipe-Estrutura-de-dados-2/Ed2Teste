@@ -4,15 +4,32 @@ import br.unicap.ed2.base.No;
 
 public class NoPV extends No {
 
-    private int fatorBalanceamento;
+    private int cor;
 
     public NoPV(int chave) {
         super(chave);
-        fatorBalanceamento = 0;
+        this.cor = 1;
     }
+    
+    public NoPV getNoEsquerda() {
+    	return this.getEsquerda();
+    }
+    
+    public NoPV getNoDireita() {
+    	return this.getDireita();
+    }
+    
+    public NoPV getNoPai() {
+    	return this.getPai();
+    }
+    
 
-    public int getFB() {
-        return fatorBalanceamento;
+    public int getCor() {
+        return this.cor;
+    }
+    
+    public void setCor(int cor) {
+    	this.cor = cor;
     }
     
 }

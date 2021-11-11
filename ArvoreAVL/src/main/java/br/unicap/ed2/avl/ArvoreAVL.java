@@ -26,6 +26,8 @@ public class ArvoreAVL extends AbstractArvoreBinariaDePesquisa<NoAVL> {
 	@Override
 	public void deletar(int key) {
 		raiz = deletarNoHelper(raiz, key);
+		calcularBalanceamento(raiz);
+		raiz = verificaBalanceamento(raiz);
 	}
 
 	// =============== Metodos para verificar rotação ===============//
